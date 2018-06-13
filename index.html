@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>Draggable UI</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="jquery-ui.min.css">
+<link rel="stylesheet" href="jquery-ui.structure.min.css">
+<link rel="stylesheet" href="jquery-ui.theme.min.css">
+
+<script src="jquery.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<style>
+    table,tr,td{
+        border:1px solid black;
+    }
+    table{
+        width:90%;
+    }
+    td{
+        height:30px;
+        width: 33%;
+        padding:20px;
+    }
+    .dropping{
+        background:rgb(0,0,155,0.5);
+    }
+    .draggable{
+        left:5px;
+        position:absolute;
+    }
+</style>
+</head>
+<body>
+    <div class="col-md-2" style="border:1px solid black;min-height:400px;margin:0px;float:left"> 
+        <label class="draggable" id="textComp">Text Control</label><br>
+        <label class="draggable" id="numberComp">Number Control</label><br>
+        <label class="draggable" id="passwordComp">Password Control</label><br>
+    </div>
+    <div class="col-md-8" style="border:1px solid black;min-height:400px;margin:0px;float:left"> 
+<table>
+    <tr><td></td><td></td></tr>
+    <tr><td></td><td></td></tr>
+    <tr><td></td><td></td></tr>
+    <tr><td></td><td></td></tr>
+    <tr><td></td><td></td></tr>
+</table>
+    </div>
+    <div class="col-md-2" style="border:1px solid black;min-height:400px;margin:0px;float:left"> 
+
+    </div>
+    <script>
+        $(document).ready(function(){
+        $( function() {
+          $( ".draggable" ).draggable({
+              revert:'valid',
+              start:function(event,ui){
+                  $(this).data({
+                        'originalLeft': $(this).css('left'),
+                        'originalTop': $(this).css('top')
+                    });
+              },
+              stop:function(event){
+                  $(this).css({
+                    'left': $(this).data('originalLeft'),
+                    'top': $(this).data('originalTop'),
+                    'position':'absolute'
+                })
+            }
+          });
+          $('td').droppable({
+              hoverClass:'dropping',
+              drop:function(event, ui){
+                  var id = $(ui.draggable).attr('id');
+                  if(id=='textComp'){
+                      var newId= Date.now();
+                      $(this).html('<input type="text" id="'+newId+'"/>' );
+                  }else if(id=='numberComp'){
+                      var newId= Date.now();
+                      $(this).html('<input type="number" id="'+newId+'"/>' );
+                  }else if(id=='passwordComp'){
+                      var newId= Date.now();
+                      $(this).html('<input type="password" id="'+newId+'"/>' );
+                  }
+                $(this).droppable('disable');
+              }
+          });
+        });
+    });
+        </script>
+</body>
+</html>
+
+
